@@ -1,0 +1,9 @@
+.big-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+.header-item, .header-left, .header-right {
+    display: inline-block;
+}
