@@ -7,22 +7,28 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+    <h1>Pomodoro Clock</h1>
     <div class="big-container">
         <div class="header">
             <div class="header-left">
+                <h2 id="work-label">Work</h2><br>
                 <button class="header-item" id="minus-time">-</button>
                 <div class="header-item" id="start-time">25</div>
                 <button class="header-item" id="plus-time">+</button>
             </div> 
             <div class="header-right">
+                <h2 id="break-label"> Break</h2><br>
                 <button class="header-item" id="minus-break">-</button>
                 <div class="header-item" id="break-time">5</div>
                 <button class="header-item" id="plus-break">+</button>
             </div>
-        </div>
-        <div class="timer">25:00</div>
+        </div><br><br><br><br>
+        <div class="timer"></div>
         <div class="footer">
             <button id="start-button">Start</button>
+            <button id="reset-button">Reset</button>
+            <button id="pause-button">Pause</button>
+            <button id="stop-button">Stop</button>
         </div>
     </div>
 </body>
