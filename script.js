@@ -56,7 +56,6 @@ startButton.addEventListener('click', () => {
     while(timerStatus) {
         return;
     }
-    
     startTimer();
 })
 
@@ -78,12 +77,10 @@ stopButton.addEventListener('click', () => {
     displayTimer(secondsLeft);
 })
 
-// Display timer
 function displayTimer(num) {
 
     let displayMinutes = Math.floor(num / 60);
     let displaySeconds = num % 60;
-    
     timer.innerHTML = formatTime(displayMinutes, displaySeconds)
 }
 
