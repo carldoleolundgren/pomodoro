@@ -6,6 +6,7 @@ const startButton = document.querySelector('#start-button');
 const resetButton = document.querySelector('#reset-button');
 const pauseButton = document.querySelector('#pause-button');
 const stopButton = document.querySelector('#stop-button');
+const status = document.querySelector('.status');
 let chosenBreakTime = Number(document.querySelector('#break-time').textContent);
 const startTime = document.querySelector('#start-time');
 let countdown;
@@ -93,6 +94,10 @@ function startTimer() {
     countdown = setInterval(() => {
         secondsLeft--;
         displayTimer(secondsLeft)
+        if (workStatus) {
+            status.innerHTML = "Work Time"
+        }
+        else { status.innerHTML = "Break Time"}
         if (secondsLeft == 0) {
             if (workStatus) {
                 workStatus = false
@@ -104,7 +109,7 @@ function startTimer() {
             }
         }
     }
-    , 50);
+    , 1000);
 }
 
 function resetTimer() {
