@@ -2,7 +2,8 @@ const buttons = {
     minuteIncrementers: document.querySelectorAll(".header-button"),
     start: document.querySelector('#start-button'),
     reset: document.querySelector('#reset-button'),
-    pause: document.querySelector('#pause-button')
+    pause: document.querySelector('#pause-button'),
+    stop: document.querySelector('#stop-button')
 }
 
 const chosenTime = {
@@ -10,20 +11,24 @@ const chosenTime = {
     break: Number(document.querySelector('#break-time').textContent)
 }
 
-const status = document.querySelector('.status');
+const status = {
+    timerActive: false,
+    paused: false,
+    workActive: true
+}
+
+const intervalLabel = document.querySelector('.status');
 const startTime = document.querySelector('#start-time');
 const timer = document.querySelector('.timer');
 
 let countdown;
-let timerStatus = false;
-let pauseStatus = false;
 let secondsLeft;
 
 displayTimer(1500);
 
 buttons.minuteIncrementers.forEach(function (button) {
     button.addEventListener('click', (e) =>{
-        if (timerStatus || pauseStatus) {
+        if (status.timerActive || status.paused) {
             return;
         }
         let target = e.target;
@@ -51,13 +56,14 @@ buttons.minuteIncrementers.forEach(function (button) {
 });
 
 buttons.start.addEventListener('click', () => {
-    if (pauseStatus) {
+    if (status.paused == true) {
         startTimer();
-        pauseStatus = false;
+        status.paused = false;
     }
+
         
     //can't press while timer is running
-    while(timerStatus) {
+    while(status.timerActive) {
         return;
     }
     startTimer();
@@ -68,17 +74,18 @@ buttons.reset.addEventListener('click', () => {
 })
 
 buttons.pause.addEventListener('click', () => {
-    if (timerStatus == false) {
+    if (status.timerActive == false) {
         return;
     } 
-    pauseStatus = true;
+    status.paused = true;
     stopTimer();
 })
 
 buttons.stop.addEventListener('click', () => {
     stopTimer();
-    secondsLeft = chosenWorkTime * 60
+    secondsLeft = chosenTime.work * 60
     displayTimer(secondsLeft);
+    intervalLabel.innerHTML = "Work Time";
 })
 
 function displayTimer(num) {
@@ -93,26 +100,23 @@ function formatTime(min, sec) {
 }
 
 function startTimer() {
-    timerStatus = true;
-    if (secondsLeft == '' || secondsLeft == null) {
+    status.timerActive = true;
+    if (!status.paused) {
         secondsLeft = chosenTime.work * 60;
     }
-    let workStatus = true
     countdown = setInterval(() => {
         secondsLeft--;
         displayTimer(secondsLeft)
-        
-        if (workStatus) {
-            status.innerHTML = "Work Time"
-        } else { status.innerHTML = "Break Time"}
 
         if (secondsLeft == 0) {
-            if (workStatus) {
-                workStatus = false
+            if (status.workActive) {
+                status.workActive = false
                 secondsLeft = chosenTime.break*60;
+                intervalLabel.innerHTML = "Break Time"
             } else {
-                workStatus = true;
+                status.workActive = true;
                 secondsLeft = chosenTime.work*60;
+                intervalLabel.innerHTML = "Work Time"
             }
         }
     }
@@ -127,12 +131,13 @@ function resetTimer() {
     chosenTime.break = 5;
     document.querySelector('#break-time').textContent = 5;
     stopTimer();
-    pauseStatus = false;
+    status.paused = false;
 }
 
 function stopTimer() {
     clearInterval(countdown);
-    timerStatus = false;
+    status.timerActive = false;
+    status.workActive = true;
 }
 
 // stop button broken
