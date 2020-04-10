@@ -120,7 +120,7 @@ function startTimer() {
             }
         }
     }
-    , 100);
+    , 1000);
 }
 
 function resetTimer() {
