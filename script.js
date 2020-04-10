@@ -1,84 +1,94 @@
-const minuteButtons = document.querySelectorAll(".header-button");
-let chosenWorkTime = Number(document.querySelector('#start-time').textContent);
-let chosenBreakTime = Number(document.querySelector('#break-time').textContent);
-const startButton = document.querySelector('#start-button');
-const resetButton = document.querySelector('#reset-button');
-const pauseButton = document.querySelector('#pause-button');
-const stopButton = document.querySelector('#stop-button');
-const status = document.querySelector('.status');
+const buttons = {
+    minuteIncrementers: document.querySelectorAll(".header-button"),
+    start: document.querySelector('#start-button'),
+    reset: document.querySelector('#reset-button'),
+    pause: document.querySelector('#pause-button'),
+    stop: document.querySelector('#stop-button')
+}
+
+const chosenTime = {
+    work: Number(document.querySelector('#start-time').textContent), 
+    break: Number(document.querySelector('#break-time').textContent)
+}
+
+const status = {
+    timerActive: false,
+    paused: false,
+    workActive: true
+}
+
+const intervalLabel = document.querySelector('.status');
 const startTime = document.querySelector('#start-time');
 const timer = document.querySelector('.timer');
 
 let countdown;
-let timerStatus = false;
-let pauseStatus = false;
 let secondsLeft;
 
 displayTimer(1500);
 
-minuteButtons.forEach(function (button) {
+buttons.minuteIncrementers.forEach(function (button) {
     button.addEventListener('click', (e) =>{
-        if (timerStatus || pauseStatus) {
+        if (status.timerActive || status.paused) {
             return;
         }
         let target = e.target;
         if (target == document.querySelector('#minus-time') || target == document.querySelector('#plus-time')) {
             if (target == document.querySelector('#minus-time')) {
-                if (chosenWorkTime == 1) {
+                if (chosenTime.work == 1) {
                     return;
                 }
-                chosenWorkTime--;
-            }
-            else { chosenWorkTime++; }
-            startTime.textContent = chosenWorkTime;
-            timer.textContent = `${Number(chosenWorkTime)}:00`;
+                chosenTime.work--;
+            } else { chosenTime.work++; }
+            startTime.textContent = chosenTime.work;
+            timer.textContent = `${Number(chosenTime.work)}:00`;
         }
         else {
             if (target == document.querySelector('#minus-break')) {
-                if (chosenBreakTime == 1) {
+                if (chosenTime.break == 1) {
                     return;
                 }
-                chosenBreakTime--;
+                chosenTime.break--;
             } 
-            else { chosenBreakTime++; }
-        document.querySelector('#break-time').textContent = chosenBreakTime;
+            else { chosenTime.break++; }
+        document.querySelector('#break-time').textContent = chosenTime.break;
         }
     })
 });
 
-startButton.addEventListener('click', () => {
-    if (pauseStatus) {
-        pauseStatus = false;
+buttons.start.addEventListener('click', () => {
+    if (status.paused == true) {
         startTimer();
+        status.paused = false;
     }
+
         
     //can't press while timer is running
-    while(timerStatus) {
+    while(status.timerActive) {
         return;
     }
     startTimer();
 })
 
-resetButton.addEventListener('click', () => {
+buttons.reset.addEventListener('click', () => {
     resetTimer();
 })
 
-pauseButton.addEventListener('click', () => {
-    if (timerStatus == false) {
+buttons.pause.addEventListener('click', () => {
+    if (status.timerActive == false) {
         return;
     } 
-    pauseStatus = true;
+    status.paused = true;
     stopTimer();
 })
 
-stopButton.addEventListener('click', () => {
+buttons.stop.addEventListener('click', () => {
     stopTimer();
-    secondsLeft = chosenWorkTime * 60
+    secondsLeft = chosenTime.work * 60
     displayTimer(secondsLeft);
+    intervalLabel.innerHTML = "Work Time";
 })
 
 function displayTimer(num) {
-
     let displayMinutes = Math.floor(num / 60);
     let displaySeconds = num % 60;
     timer.innerHTML = formatTime(displayMinutes, displaySeconds)
@@ -90,44 +100,45 @@ function formatTime(min, sec) {
 }
 
 function startTimer() {
-    timerStatus = true;
-    if (secondsLeft == '' || secondsLeft == null) {
-        secondsLeft = chosenWorkTime * 60;
+    status.timerActive = true;
+    if (!status.paused) {
+        secondsLeft = chosenTime.work * 60;
     }
-    let workStatus = true
     countdown = setInterval(() => {
         secondsLeft--;
         displayTimer(secondsLeft)
-        if (workStatus) {
-            status.innerHTML = "Work Time"
-        }
-        else { status.innerHTML = "Break Time"}
+
         if (secondsLeft == 0) {
-            if (workStatus) {
-                workStatus = false
-                secondsLeft = chosenBreakTime*60;
-            }
-            else {
-                workStatus = true;
-                secondsLeft = chosenWorkTime*60;
+            if (status.workActive) {
+                status.workActive = false
+                secondsLeft = chosenTime.break*60;
+                intervalLabel.innerHTML = "Break Time"
+            } else {
+                status.workActive = true;
+                secondsLeft = chosenTime.work*60;
+                intervalLabel.innerHTML = "Work Time"
             }
         }
     }
-    , 1000);
+    , 100);
 }
 
 function resetTimer() {
     displayTimer(1500);
     secondsLeft = null;
-    chosenWorkTime = 25;
+    chosenTime.work = 25;
     document.querySelector('#start-time').textContent = 25;
-    chosenBreakTime = 5;
+    chosenTime.break = 5;
     document.querySelector('#break-time').textContent = 5;
     stopTimer();
-    pauseStatus = false;
+    status.paused = false;
 }
 
 function stopTimer() {
     clearInterval(countdown);
-    timerStatus = false;
+    status.timerActive = false;
+    status.workActive = true;
 }
+
+// stop button broken
+// clicking pause then start when in break time changes status to "work time"
