@@ -1,56 +1,58 @@
-const header = document.querySelector(".header");
-const minuteButtons = header.querySelectorAll("button");
+const minuteButtons = document.querySelectorAll(".header-button");
 let chosenWorkTime = Number(document.querySelector('#start-time').textContent);
-let timer = document.querySelector('.timer');
+let chosenBreakTime = Number(document.querySelector('#break-time').textContent);
 const startButton = document.querySelector('#start-button');
 const resetButton = document.querySelector('#reset-button');
 const pauseButton = document.querySelector('#pause-button');
 const stopButton = document.querySelector('#stop-button');
 const status = document.querySelector('.status');
-let chosenBreakTime = Number(document.querySelector('#break-time').textContent);
 const startTime = document.querySelector('#start-time');
+const timer = document.querySelector('.timer');
+
 let countdown;
-let seconds = chosenWorkTime * 60;
 let timerStatus = false;
+let pauseStatus = false;
 let secondsLeft;
 
 displayTimer(1500);
 
 minuteButtons.forEach(function (button) {
     button.addEventListener('click', (e) =>{
+        if (timerStatus || pauseStatus) {
+            return;
+        }
         let target = e.target;
-        
-        if (target == document.querySelector('#minus-time')) {
-            if (chosenWorkTime == 1) {
-                return;
+        if (target == document.querySelector('#minus-time') || target == document.querySelector('#plus-time')) {
+            if (target == document.querySelector('#minus-time')) {
+                if (chosenWorkTime == 1) {
+                    return;
+                }
+                chosenWorkTime--;
             }
-            chosenWorkTime--;
-            seconds = chosenWorkTime * 60;
+            else { chosenWorkTime++; }
             startTime.textContent = chosenWorkTime;
             timer.textContent = `${Number(chosenWorkTime)}:00`;
-        }
-        else if (target == document.querySelector('#plus-time')) {
-            chosenWorkTime++;
-            seconds = chosenWorkTime * 60;
-            startTime.textContent = chosenWorkTime;
-            timer.textContent = `${Number(chosenWorkTime)}:00`;
-        }
-        else if (target == document.querySelector('#minus-break')) {
-            if (chosenBreakTime == 1) {
-                return;
-            }
-            chosenBreakTime--;
-            document.querySelector('#break-time').textContent = chosenBreakTime;
         }
         else {
-            chosenBreakTime++;
-            document.querySelector('#break-time').textContent = chosenBreakTime;
+            if (target == document.querySelector('#minus-break')) {
+                if (chosenBreakTime == 1) {
+                    return;
+                }
+                chosenBreakTime--;
+            } 
+            else { chosenBreakTime++; }
+        document.querySelector('#break-time').textContent = chosenBreakTime;
         }
     })
 });
 
 startButton.addEventListener('click', () => {
-    //can't press twice
+    if (pauseStatus) {
+        pauseStatus = false;
+        startTimer();
+    }
+        
+    //can't press while timer is running
     while(timerStatus) {
         return;
     }
@@ -63,14 +65,17 @@ resetButton.addEventListener('click', () => {
 })
 
 pauseButton.addEventListener('click', () => {
+    if (timerStatus == false) {
+        return;
+    } 
+    pauseStatus = true;
     stopTimer();
-    seconds = secondsLeft;
 })
 
 stopButton.addEventListener('click', () => {
     stopTimer();
-    seconds = chosenWorkTime*60;
-    displayTimer(seconds);
+    secondsLeft = chosenWorkTime * 60
+    displayTimer(secondsLeft);
 })
 
 // Display timer
@@ -89,7 +94,9 @@ function formatTime(min, sec) {
 
 function startTimer() {
     timerStatus = true;
-    secondsLeft = seconds;
+    if (secondsLeft == '' || secondsLeft == null) {
+        secondsLeft = chosenWorkTime * 60;
+    }
     let workStatus = true
     countdown = setInterval(() => {
         secondsLeft--;
@@ -114,16 +121,16 @@ function startTimer() {
 
 function resetTimer() {
     displayTimer(1500);
+    secondsLeft = null;
     chosenWorkTime = 25;
-    seconds = chosenWorkTime  * 60;
     document.querySelector('#start-time').textContent = 25;
     chosenBreakTime = 5;
     document.querySelector('#break-time').textContent = 5;
     stopTimer();
+    pauseStatus = false;
 }
 
 function stopTimer() {
     clearInterval(countdown);
     timerStatus = false;
 }
-
