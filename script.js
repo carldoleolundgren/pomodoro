@@ -139,6 +139,3 @@ function stopTimer() {
     status.timerActive = false;
     status.workActive = true;
 }
-
-// stop button broken
-// clicking pause then start when in break time changes status to "work time"

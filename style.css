@@ -5,13 +5,19 @@ body {
     background: linear-gradient(to right, rgb(50, 76, 224), rgb(139, 187, 209));
     color: white;
 }
-
 h2 {
     display: inline-block;
     font-size: medium;
     margin-bottom: 5px;
 }
-
+.main {
+    margin-top: 5%;
+    display: inline-block;
+    border: black 1px solid;
+    text-align: center;
+    background-color: rgb(26, 24, 24);
+    width: 35%; 
+}
 button {
     outline: none;
     line-height: 27px;
@@ -22,57 +28,40 @@ button {
     border: 1px solid #F4F4F4;
     border-radius: 3px;
 }
-
 button:hover {
     color: #222;
     border: 1px solid #c6c6c6;
 }
-
-.big-container {
-    margin-top: 10%;
-    display: inline-block;
-    border: black 1px solid;
-    text-align: center;
-    background-color: rgb(26, 24, 24);
-    width: 35%;
-    
-}
-
 .header-item, .header-left, .header-right {
     display: inline-block;
     padding-bottom: 5%;
 }
-
 .header-item {
     line-height: 15px;
     width: 15px;
     padding-left: 10px;
     padding-right: 10px;
 }
-
 .header-button {
     padding: 0px;
     line-height: 15px;
     width: 15px;
 }
-
-
 .header-left {
     float: left;
     padding-left: 20%;
 }
-
 .header-right {
     float: right;
     padding-right: 20%;
 }
-
 .timer {
     padding-bottom: 5%;
     font-size: 55px;
 }
-
 .footer {
     margin-bottom: 20px;
 }
-
+.control-button {
+    margin: 0 10px;
+}
