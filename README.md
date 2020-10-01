@@ -1,3 +1,13 @@
-Pair Programming exercise as part of [The Odin Project's curriculum](https://www.theodinproject.com/lessons/pairing-project), made with [carldoleolundgren](https://github.com/carldoleolundgren).
+<h1 align="center">Pomodoro Clock</h1>
 
-Build a [Pomodoro Clock](https://en.wikipedia.org/wiki/Pomodoro_Technique) web app with a partner.
+<h2 align="center"><a  href="https://jdonahue135.github.io/pomodoro/">Live Demo</a></h2>
+
+<img src="./images/pomodoro.png" width="100%">
+
+_Choose your work time and break time, then press start to use._
+
+## Description
+Build a [Pomodoro Clock](https://en.wikipedia.org/wiki/Pomodoro_Technique) web app with a partner using pair programming concepts. made with [carldoleolundgren](https://github.com/carldoleolundgren).
+
+## Future Scope
+Edit CSS for mobile display.
