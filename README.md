@@ -7,7 +7,7 @@
 _Choose your work time and break time, then press start to use._
 
 ## Description
-Build a [Pomodoro Clock](https://en.wikipedia.org/wiki/Pomodoro_Technique) web app with a partner using pair programming concepts. made with [carldoleolundgren](https://github.com/carldoleolundgren).
+Build a [Pomodoro Clock](https://en.wikipedia.org/wiki/Pomodoro_Technique) web app with a partner using pair programming concepts. Made with [carldoleolundgren](https://github.com/carldoleolundgren).
 
 ## Future Scope
 Edit CSS for mobile display.
